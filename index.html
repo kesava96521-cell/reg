@@ -1,135 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Student Database Test</title>
-
-    <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 500px;
-            margin: 50px auto;
-            padding: 20px;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            box-sizing: border-box;
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            cursor: pointer;
-        }
-
-        #message {
-            margin-top: 20px;
-        }
-    </style>
 </head>
-
 <body>
-
     <h1>Student Registration</h1>
-
-    <input
-        type="text"
-        id="name"
-        placeholder="Enter name"
-    >
-
-    <input
-        type="number"
-        id="age"
-        placeholder="Enter age"
-    >
-
-    <button onclick="saveStudent()">
-        Save Student
-    </button>
-
+    <input type="text" id="name" placeholder="Enter name">
+    <input type="number" id="age" placeholder="Enter age">
+    <button onclick="saveStudent()">Save Student</button>
     <p id="message"></p>
 
-
     <script>
+        const SUPABASE_URL = "https://lkpnxnzagfbjcwoiltij.supabase.co";
+        const SUPABASE_KEY = "NEE_ANON_KEY_AKKADA_PETTU"; // Settings > API nundi teesuko
 
-        // ==============================
-        // SUPABASE CONNECTION
-        // ==============================
-
-        const SUPABASE_URL = "https://lkpnxnzagfbjcwoiltij.supabase.co/rest/v1/";
-
-        const SUPABASE_KEY = "sb_publishable_V-qO2Xpbs7AQapyBK3W7gQ_GzpWAG-t";
-
-
-        const supabaseClient =
-            window.supabase.createClient(
-                SUPABASE_URL,
-                SUPABASE_KEY
-            );
-
-
-        // ==============================
-        // SAVE STUDENT
-        // ==============================
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         async function saveStudent() {
-
-            const name =
-                document.getElementById("name").value;
-
-            const age =
-                document.getElementById("age").value;
-
+            const name = document.getElementById("name").value;
+            const age = document.getElementById("age").value;
 
             if (!name || !age) {
-
-                document.getElementById("message").innerText =
-                    "Please enter name and age.";
-
+                document.getElementById("message").innerText = "Please enter name and age.";
                 return;
             }
 
-
-            const { data, error } =
-                await supabaseClient
-                    .from("students")
-                    .insert([
-                        {
-                            name: name,
-                            age: Number(age)
-                        }
-                    ]);
-
+            const { data, error } = await supabaseClient
+                .from("students")
+                .insert([{ name: name, age: Number(age) }]);
 
             if (error) {
-
                 console.error(error);
-
-                document.getElementById("message").innerText =
-                    "Error: " + error.message;
-
+                document.getElementById("message").innerText = "Error: " + error.message;
                 return;
             }
 
-
-            document.getElementById("message").innerText =
-                "Student saved successfully! ✅";
-
-
+            document.getElementById("message").innerText = "Student saved successfully! ✅";
             document.getElementById("name").value = "";
             document.getElementById("age").value = "";
         }
-
     </script>
-
 </body>
 </html>
